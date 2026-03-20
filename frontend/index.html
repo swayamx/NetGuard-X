@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NetGuard X</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+.alert {
+    color: red;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🛡️ NetGuard X Dashboard</h1>
+
+<canvas id="chart"></canvas>
+
+<div id="alerts"></div>
+
+<script>
+let chart;
+
+async function loadData() {
+    const res = await fetch("http://127.0.0.1:5000/analyze");
+    const result = await res.json();
+
+    const data = result.data;
+    const alerts = result.alerts;
+
+    const labels = data.map((_,i)=>i);
+    const sizes = data.map(d=>d[0]);
+
+    if(chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("chart"), {
+        type:"line",
+        data:{
+            labels:labels,
+            datasets:[{label:"Packet Size",data:sizes}]
+        }
+    });
+
+    const alertBox = document.getElementById("alerts");
+    alertBox.innerHTML = "";
+
+    alerts.forEach(a=>{
+        const p = document.createElement("p");
+        p.className="alert";
+        p.innerText=a;
+        alertBox.appendChild(p);
+    });
+}
+
+setInterval(loadData,3000);
+</script>
+
+</body>
+</html>
