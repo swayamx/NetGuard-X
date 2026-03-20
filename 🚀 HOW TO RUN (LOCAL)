@@ -1,0 +1,15 @@
+1️⃣ Backend
+cd backend
+pip install -r requirements.txt
+python app.py
+2️⃣ Agent (Network Capture)
+cd agent
+python agent.py
+3️⃣ Frontend
+
+Open:
+
+frontend/login.html
+🌐 FOR DEPLOYMENT
+Replace all http://127.0.0.1:5000
+👉 with your Render URL
