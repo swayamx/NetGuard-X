@@ -1,0 +1,13 @@
+netguard-x/
+│
+├── backend/
+│   ├── app.py
+│   ├── db.db
+│   └── requirements.txt
+│
+├── agent/
+│   └── agent.py
+│
+└── frontend/
+    └── index.html
+    └── login.html
