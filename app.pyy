@@ -1,0 +1,102 @@
+def classify_attack(row):
+    if row["size"] > 1400 and row["proto"] == 1:
+        return "DDoS Attack"
+
+    if row["size"] < 100 and row["proto"] > 10:
+        return "Port Scanning"
+
+    if row["size"] > 1000 and row["proto"] > 5:
+        return "Data Exfiltration"
+
+    return "Unknown Threat"
+
+...............................................................................................................................
+...............................................................................................................................
+
+👉 Upgrade your logic:
+
+def classify_attack(row):
+    if row["size"] > 1400 and row["proto"] == 1:
+        return "DDoS Attack"
+
+    if row["size"] < 100 and row["proto"] > 10:
+        return "Port Scanning"
+
+    if row["size"] > 1000 and row["proto"] > 5:
+        return "Data Exfiltration"
+
+    return "Unknown Threat"
+🎯 2. Add Severity Levels (This makes it feel REAL)
+def get_severity(size):
+    if size > 1500:
+        return "HIGH"
+    elif size > 800:
+        return "MEDIUM"
+    return "LOW"
+
+Now alerts become:
+
+{
+  "type": "DDoS Attack",
+  "severity": "HIGH",
+  "message": "Large packet flood detected"
+}
+📊 3. Add a “Threat Score” (This is impressive in demos)
+
+Give each request a score out of 100:
+
+df["threat_score"] = (
+    (df["size"] / df["size"].max()) * 50 +
+    (df["anomaly"] == -1).astype(int) * 50
+)
+
+Now you can say:
+
+“This traffic has a 92% threat probability”
+
+That sounds powerful.
+
+🧠 4. Add Memory (Trend Detection)
+
+Right now your model forgets everything every run.
+
+Add this:
+
+if df["anomaly"].tail(5).sum() < 0:
+    alerts.append({
+        "type": "pattern",
+        "message": "Repeated anomalies detected (Possible ongoing attack)"
+    })
+
+Now your system detects ongoing attacks, not just single events.
+
+🌐 5. Add IP + Geo Simulation (Game Changer for Demo)
+
+Modify DB:
+
+ALTER TABLE traffic ADD COLUMN ip TEXT;
+
+Then fake IPs:
+
+import random
+
+fake_ip = f"192.168.{random.randint(0,255)}.{random.randint(0,255)}"
+
+Now your alerts look like:
+
+{
+  "ip": "192.168.23.91",
+  "attack": "DDoS",
+  "severity": "HIGH"
+}
+
+Feels like a real cybersecurity tool instantly.
+
+🎨 6. Add a Simple Frontend (THIS is where magic happens)
+
+Even a basic UI makes it 10x cooler:
+
+🔴 Red = High Threat
+🟡 Yellow = Medium
+🟢 Green = Normal
+Live updating table
